@@ -35,7 +35,7 @@ app = Flask(__name__)
 # NOTE: images are read in by default with the origin (0, 0) in the upper left
 # and y-axis increasing downward.
 ground_truth = mpimg.imread(
-    'C:/Users/user/Desktop/Fresh Start Project/RoboND-Rover-Project/calibration_images/map_bw.png')
+    'C:/Users/pocs.geza/Desktop/Udacity/RoboND-Rover-Project/calibration_images/map_bw.png')
 # This next line creates arrays of zeros in the red and blue channels
 # and puts the map into the green channel.  This is why the underlying 
 # map output looks green in the display image
