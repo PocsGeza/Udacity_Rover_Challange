@@ -3,17 +3,20 @@ import cv2
 
 # Identify pixels above the threshold
 # Threshold of RGB > 160 does a nice job of identifying ground pixels only
-def color_thresh(img, rgb_thresh=(160, 160, 160)):
+def color_thresh(img, rgb_thresh):
     # Create an array of zeros same xy size as img, but single channel
     color_select = np.zeros_like(img[:,:,0])
     # Require that each pixel be above all three threshold values in RGB
     # above_thresh will now contain a boolean array with "True"
     # where threshold was met
-    above_thresh = (img[:,:,0] > rgb_thresh[0]) \
-                & (img[:,:,1] > rgb_thresh[1]) \
-                & (img[:,:,2] > rgb_thresh[2])
+    whitin_thresh = (img[:, :, 0] > rgb_thresh[0][0]) \
+                    & (img[:, :, 0] <= rgb_thresh[0][1]) \
+                    & (img[:, :, 1] > rgb_thresh[1][0]) \
+                    & (img[:, :, 1] <= rgb_thresh[1][1]) \
+                    & (img[:, :, 2] > rgb_thresh[2][0]) \
+                    & (img[:, :, 2] <= rgb_thresh[2][1])
     # Index the array of zeros with the boolean array and set to 1
-    color_select[above_thresh] = 1
+    color_select[whitin_thresh] = 1
     # Return the binary image
     return color_select
 
@@ -107,6 +110,16 @@ def perception_step(Rover):
     warped = perspect_transform(image, source, destination)
 
     # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
+
+    rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
+    rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
+    rgb_thresh_rock = ([0, 0], [0, 0], [0, 0])#need to measured
+
+    threshed_navigable = color_thresh(warped, rgb_thresh_navigable)
+
+    threshed_obstacle = color_thresh(warped, rgb_thresh_obstacle)
+
+
     # 4) Update Rover.vision_image (this will be displayed on left side of screen)
         # Example: Rover.vision_image[:,:,0] = obstacle color-thresholded binary image
         #          Rover.vision_image[:,:,1] = rock_sample color-thresholded binary image
