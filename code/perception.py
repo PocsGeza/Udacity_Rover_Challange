@@ -51,11 +51,15 @@ def rotate_pix(xpix, ypix, yaw):
     # Return the result  
     return xpix_rotated, ypix_rotated
 
-def translate_pix(xpix_rot, ypix_rot, xpos, ypos, scale): 
+def translate_pix(xpix_rot,
+                  ypix_rot,
+                  xpos,
+                  ypos,
+                  scale):
     # Apply a scaling and a translation
     xpix_translated = (xpix_rot / scale) + xpos
     ypix_translated = (ypix_rot / scale) + ypos
-    # Return the result  
+    # Return the result
     return xpix_translated, ypix_translated
 
 
@@ -147,6 +151,45 @@ def perception_step(Rover):
     # mean_dir_rock = np.mean(angles_rock)
 
     # 6) Convert rover-centric pixel values to world coordinates
+
+    # a) Rotate
+    yaw = Rover.yaw
+
+    xpix_rotated_nav, ypix_rotated_nav = rotate_pix(xpix_rc_nav,
+                                                    ypix_rn_nav,
+                                                    yaw)
+    xpix_rotated_obs, ypix_rotated_obs = rotate_pix(xpix_rc_obs,
+                                                    ypix_rn_obs,
+                                                    yaw)
+    # xpix_rotated_rock, ypix_rotated_rock = rotate_pix(xpix_rc_rock,
+     #                                               ypix_rn_rock,
+     #                                               yaw)
+
+    # b) Translate
+    scale = 10
+    x_pos = Rover.pos[0]
+    y_pos = Rover.pos[1]
+    xpix_world_cord_nav, ypix_world_cord_nav = \
+        translate_pix(xpix_rotated_nav,
+                      ypix_rotated_nav,
+                      x_pos,
+                      y_pos,
+                      scale)
+
+    xpix_world_cord_obs, ypix_world_cord_obs = \
+        translate_pix(xpix_rotated_obs,
+                      ypix_rotated_obs,
+                      x_pos,
+                      y_pos,
+                      scale)
+    '''
+    xpix_world_cord_rock, ypix_world_cord_rock = \
+        translate_pix(xpix_rotated_rock,
+                      ypix_rotated_rock,
+                      x_pos, y_pos,
+                      scale)
+                      '''
+
     # 7) Update Rover worldmap (to be displayed on right side of screen)
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
         #          Rover.worldmap[rock_y_world, rock_x_world, 1] += 1
