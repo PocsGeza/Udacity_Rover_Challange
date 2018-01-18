@@ -117,11 +117,13 @@ def perception_step(Rover):
 
     rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
     rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
-    rgb_thresh_rock = ([0, 0], [0, 0], [0, 0])#need to measured
+    rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
 
     threshed_navigable = color_thresh(warped, rgb_thresh_navigable)
 
     threshed_obstacle = color_thresh(warped, rgb_thresh_obstacle)
+
+    threshed_rock = color_thresh(warped, rgb_thresh_rock)
 
     # threshed_rock = color_thresh(warped, rgb_thresh_rock)
 
@@ -131,7 +133,7 @@ def perception_step(Rover):
         #          Rover.vision_image[:,:,2] = navigable terrain color-thresholded binary image
 
     Rover.vision_image[:, :, 0] = threshed_obstacle
-    # Rover.vision_image[:, :, 1] = threshed_rock
+    Rover.vision_image[:, :, 1] = threshed_rock
     Rover.vision_image[:, :, 2] = threshed_navigable
 
     # 5) Convert map image pixel values to rover-centric coords
@@ -139,7 +141,7 @@ def perception_step(Rover):
 
     xpix_rc_nav, ypix_rn_nav = rover_coords(threshed_navigable)
     xpix_rc_obs, ypix_rn_obs = rover_coords(threshed_obstacle)
-    # xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
+    xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
 
     # 6) Convert rover-centric pixel values to world coordinates
 
@@ -152,9 +154,9 @@ def perception_step(Rover):
     xpix_rotated_obs, ypix_rotated_obs = rotate_pix(xpix_rc_obs,
                                                     ypix_rn_obs,
                                                     yaw)
-    # xpix_rotated_rock, ypix_rotated_rock = rotate_pix(xpix_rc_rock,
-     #                                               ypix_rn_rock,
-     #                                               yaw)
+    xpix_rotated_rock, ypix_rotated_rock = rotate_pix(xpix_rc_rock,
+                                                      ypix_rn_rock,
+                                                      yaw)
 
     # b) Translate
     scale = 10
@@ -173,13 +175,13 @@ def perception_step(Rover):
                       x_pos,
                       y_pos,
                       scale)
-    '''
+
     xpix_world_cord_rock, ypix_world_cord_rock = \
         translate_pix(xpix_rotated_rock,
                       ypix_rotated_rock,
                       x_pos, y_pos,
                       scale)
-                      '''
+
 
     # 7) Update Rover worldmap (to be displayed on right side of screen)
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
@@ -187,9 +189,9 @@ def perception_step(Rover):
         #          Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
 
     Rover.worldmap[ypix_world_cord_obs.astype(np.int32), xpix_world_cord_obs.astype(np.int32), 0] += 1
-    '''
-    Rover.worldmap[ypix_world_cord_rock, xpix_world_cord_rock, 1] += 1
-    '''
+
+    Rover.worldmap[ypix_world_cord_rock.astype(np.int32), xpix_world_cord_rock.astype(np.int32), 1] += 1
+
     Rover.worldmap[ypix_world_cord_nav.astype(np.int32), xpix_world_cord_nav.astype(np.int32), 2] += 1
 
 
@@ -201,8 +203,8 @@ def perception_step(Rover):
     dist_obs, angles_obs = to_polar_coords(xpix_rc_obs, ypix_rn_obs)
     mean_dir_obs = np.mean(angles_obs)
 
-    # dist_rock, angles_rock = to_polar_coords(xpix_rc_rock, ypix_rn_rock)
-    # mean_dir_rock = np.mean(angles_rock)
+    dist_rock, angles_rock = to_polar_coords(xpix_rc_rock, ypix_rn_rock)
+    mean_dir_rock = np.mean(angles_rock)
 
     # Update Rover pixel distances and angles
         # Rover.nav_dists = rover_centric_pixel_distances
