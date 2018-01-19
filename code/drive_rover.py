@@ -106,7 +106,7 @@ fps = None
 def telemetry(sid, data):
 
     global frame_counter, second_counter, fps
-    frame_counter+=1
+    frame_counter += 1
     # Do a rough calculation of frames per second (FPS)
     if (time.time() - second_counter) > 1:
         fps = frame_counter
