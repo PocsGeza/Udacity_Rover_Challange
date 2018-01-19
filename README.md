@@ -4,7 +4,35 @@ Dear reviewer,
 This is the best I could do with the project in the time available. This was by far the largest Python project I had to work on (not much experience with Python). I am also working 4 days a week and in the mornings I am preparing for the drivers exam.
 If any aspect of the project is insufficiently implemented please let me know. I will address as soon as I have time.
 
-## The Simulator
+## Generating video with the Jupiter Notebook
+I have managed to run all the function is the notebook. `process_image()` was completed using the functions in the notebook.
+
+`color_thresh()` was modifie to take in ranges.
+```sh
+def color_thresh(img, rgb_thresh):
+    # Create an array of zeros same xy size as img, but single channel
+    color_select = np.zeros_like(img[:,:,0])
+    # Require that each pixel be above all three threshold values in RGB
+    # whitin_thresh will now contain a boolean array with "True"
+    # where threshold was met
+    whitin_thresh = ( img[:, :, 0] >  rgb_thresh[0][0]) \
+                   & (img[:, :, 0] <= rgb_thresh[0][1]) \
+                   & (img[:, :, 1] >  rgb_thresh[1][0]) \
+                   & (img[:, :, 1] <= rgb_thresh[1][1]) \
+                   & (img[:, :, 2] >  rgb_thresh[2][0]) \
+                   & (img[:, :, 2] <= rgb_thresh[2][1])
+    # Index the array of zeros with the boolean array and set to 1
+    color_select[whitin_thresh] = 1
+    # Return the binary image
+    return color_select
+```
+The color ranges where chosen using MS Paint-s color sampling tool.
+
+```sh
+rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
+rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
+rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
+```
 The first step is to download the simulator build that's appropriate for your operating system.  Here are the links for [Linux](https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Linux_Roversim.zip), [Mac](	https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Mac_Roversim.zip), or [Windows](https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Windows_Roversim.zip).  
 
 You can test out the simulator by opening it up and choosing "Training Mode".  Use the mouse or keyboard to navigate around the environment and see how it looks.
