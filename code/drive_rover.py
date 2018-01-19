@@ -47,7 +47,8 @@ ground_truth_3d = np.dstack((ground_truth*0, ground_truth*255, ground_truth*0)).
 class RoverState():
     def __init__(self):
         self.start_time = None # To record the start time of navigation
-        self.total_time = None # To record total duration of naviagation
+        self.total_time = None # To record total duration of navigation
+        self.counter = 0  # To count the number of images received
         self.img = None # Current camera image
         self.pos = None # Current position (x, y)
         self.yaw = None # Current yaw angle

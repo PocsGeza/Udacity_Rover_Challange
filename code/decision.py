@@ -13,7 +13,7 @@ def decision_step(Rover):
     right_nav_ind = Rover.nav_angles[Rover.nav_angles <= 0]
     enough_space_on_both_sides = (len(left_nav_ind) >= Rover.stop_forward/2) & \
                     (len(right_nav_ind) >= Rover.stop_forward/2)
-    left_turn_bias = 9
+    left_turn_bias = 11
 
     # Example:
     # Check if we have vision data to make decisions with

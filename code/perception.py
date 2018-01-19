@@ -187,12 +187,12 @@ def perception_step(Rover):
 
     # region c) Trim distant points from nav and obs
     # Select points closer than given distance
-    good_proximity = 10
+    good_proximity = 15
     close_enough_nav = ((xpix_world_cord_nav - x_pos) ** 2 + (ypix_world_cord_nav - y_pos) ** 2) ** 0.5 < good_proximity
     xpix_w_cor_nav_trim = xpix_world_cord_nav[close_enough_nav]
     ypix_w_cor_nav_trim = ypix_world_cord_nav[close_enough_nav]
 
-    close_enough_obs = ((xpix_world_cord_obs - x_pos) ** 2 + (ypix_world_cord_obs - y_pos) ** 2) ** 0.5 < good_proximity
+    close_enough_obs = ((xpix_world_cord_obs - x_pos) ** 2 + (ypix_world_cord_obs - y_pos) ** 2) ** 0.5 < good_proximity-5
     xpix_w_cor_obs_trim = xpix_world_cord_obs[close_enough_obs]
     ypix_w_cor_obs_trim = ypix_world_cord_obs[close_enough_obs]
 
@@ -200,6 +200,7 @@ def perception_step(Rover):
     # endregion
 
     # region 7) Update Rover worldmap (to be displayed on right side of screen)
+    # region a) Update worldmap
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
         #          Rover.worldmap[rock_y_world, rock_x_world, 1] += 1
         #          Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
@@ -215,7 +216,20 @@ def perception_step(Rover):
             Rover.worldmap[ypix_w_cor_nav_trim.astype(np.int32), xpix_w_cor_nav_trim.astype(np.int32), 2] += 1
     except IndexError:
         pass
+    # endregion
 
+    # region b) Trim worldmap
+    Rover.counter += 1
+    if Rover.counter == 400:
+        to_low_nav = Rover.worldmap[:, :, 2] < 20
+        Rover.worldmap[to_low_nav[1], to_low_nav[0], 2] = 0
+
+        to_low_obs = Rover.worldmap[:, :, 0] < 20
+        Rover.worldmap[to_low_obs[1], to_low_obs[0], 0] = 0
+        Rover.counter = 0
+
+
+    # endregion
     # endregion
 
     # region 8) Convert rover-centric pixel positions to polar coordinates
