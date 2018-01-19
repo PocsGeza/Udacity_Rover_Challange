@@ -184,22 +184,35 @@ def perception_step(Rover):
                       x_pos, y_pos,
                       scale)
     # endregion
+
+    # region c) Trim distant points from nav and obs
+    # Select points closer than given distance
+    good_proximity = 10
+    close_enough_nav = ((xpix_world_cord_nav - x_pos) ** 2 + (ypix_world_cord_nav - y_pos) ** 2) ** 0.5 < good_proximity
+    xpix_w_cor_nav_trim = xpix_world_cord_nav[close_enough_nav]
+    ypix_w_cor_nav_trim = ypix_world_cord_nav[close_enough_nav]
+
+    close_enough_obs = ((xpix_world_cord_obs - x_pos) ** 2 + (ypix_world_cord_obs - y_pos) ** 2) ** 0.5 < good_proximity
+    xpix_w_cor_obs_trim = xpix_world_cord_obs[close_enough_obs]
+    ypix_w_cor_obs_trim = ypix_world_cord_obs[close_enough_obs]
+
+    # endregion
     # endregion
 
     # region 7) Update Rover worldmap (to be displayed on right side of screen)
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
         #          Rover.worldmap[rock_y_world, rock_x_world, 1] += 1
         #          Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
-    pitch_range = [2, 358]
-    roll_range = [2, 358]
+    pitch_range = [1, 359]
+    roll_range = [1, 359]
 
     try:
         if  ((Rover.pitch < pitch_range[1]) | (Rover.pitch > pitch_range[0])) &\
-            ((Rover.roll > roll_range[0])  | (Rover.roll > roll_range[0])):
+        ((Rover.roll > roll_range[0]) | (Rover.roll > roll_range[0])):
 
-            Rover.worldmap[ypix_world_cord_obs.astype(np.int32), xpix_world_cord_obs.astype(np.int32), 0] += 1
+            Rover.worldmap[ypix_w_cor_obs_trim.astype(np.int32), xpix_w_cor_obs_trim.astype(np.int32), 0] += 1
             Rover.worldmap[ypix_world_cord_rock.astype(np.int32), xpix_world_cord_rock.astype(np.int32), 1] += 1
-            Rover.worldmap[ypix_world_cord_nav.astype(np.int32), xpix_world_cord_nav.astype(np.int32), 2] += 1
+            Rover.worldmap[ypix_w_cor_nav_trim.astype(np.int32), xpix_w_cor_nav_trim.astype(np.int32), 2] += 1
     except IndexError:
         pass
 

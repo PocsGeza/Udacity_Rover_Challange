@@ -9,13 +9,11 @@ def decision_step(Rover):
     # Here you're all set up with some basic functionality but you'll need to
     # improve on this decision tree to do a good job of navigating autonomously!
 
-
     left_nav_ind = Rover.nav_angles[Rover.nav_angles > 0]
     right_nav_ind = Rover.nav_angles[Rover.nav_angles <= 0]
     enough_space_on_both_sides = (len(left_nav_ind) >= Rover.stop_forward/2) & \
                     (len(right_nav_ind) >= Rover.stop_forward/2)
     left_turn_bias = 9
-
 
     # Example:
     # Check if we have vision data to make decisions with
