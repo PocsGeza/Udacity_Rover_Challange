@@ -46,10 +46,40 @@ Optional functionality was added for debuging that marks the position of the rov
 ## Autonomous Navigation and Mapping
 The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is syced to a Git repository [PocsGeza/Udacity_Rover_Challange](https://github.com/PocsGeza/Udacity_Rover_Challange). 
 
+## Preception Step
+The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
+### 1) Define source and destination points for perspective transform
 
-Here is a great link for learning more about [Anaconda and Jupyter Notebooks](https://classroom.udacity.com/courses/ud1111)
+```sh
+source = np.float32([[14, 140], [301, 140], [200, 96], [118, 96]])
+    destination = np.float32([[image.shape[1] / 2 - dst_size, image.shape[0] - bottom_offset],
+                              [image.shape[1] / 2 + dst_size, image.shape[0] - bottom_offset],
+                              [image.shape[1] / 2 + dst_size, image.shape[0] - 2 * dst_size - bottom_offset],
+                              [image.shape[1] / 2 - dst_size, image.shape[0] - 2 * dst_size - bottom_offset],
+                              ])
+```
 
-## Recording Data
+### 2) Apply perspective transform to the image
+```sh
+warped = perspect_transform(image, source, destination)
+```
+### 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
+```sh
+rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
+rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
+rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
+
+threshed_navigable = color_thresh(warped, rgb_thresh_navigable)
+threshed_obstacle = color_thresh(warped, rgb_thresh_obstacle)
+threshed_rock = color_thresh(warped, rgb_thresh_rock)
+
+```
+### 4) Update Rover.vision_image
+```sh
+Rover.vision_image[:, :, 0] = threshed_obstacle*255
+Rover.vision_image[:, :, 1] = threshed_rock*255
+Rover.vision_image[:, :, 2] = threshed_navigable*255
+```
 I've saved some test data for you in the folder called `test_dataset`.  In that folder you'll find a csv file with the output data for steering, throttle position etc. and the pathnames to the images recorded in each run.  I've also saved a few images in the folder called `calibration_images` to do some of the initial calibration steps with.  
 
 The first step of this project is to record data on your own.  To do this, you should first create a new folder to store the image data in.  Then launch the simulator and choose "Training Mode" then hit "r".  Navigate to the directory you want to store data in, select it, and then drive around collecting data.  Hit "r" again to stop data collection.
