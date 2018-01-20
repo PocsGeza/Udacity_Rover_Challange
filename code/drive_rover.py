@@ -43,7 +43,7 @@ ground_truth_3d = np.dstack((ground_truth*0, ground_truth*255, ground_truth*0)).
 # endregion
 
 
-# region Define RoverState() class to retain rover state parameters
+# region Define RoverState()  class to retain rover state parameters
 class RoverState():
     def __init__(self):
         self.start_time = None # To record the start time of navigation
