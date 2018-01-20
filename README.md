@@ -193,13 +193,17 @@ I declared variables fine tuning the `decision()`.
 
 ```
 left_nav_ind = Rover.nav_angles[Rover.nav_angles > 0]
+
 right_nav_ind = Rover.nav_angles[Rover.nav_angles <= 0]
+
 enough_space_on_both_sides = (len(left_nav_ind) >= Rover.stop_forward/2) & (len(right_nav_ind) >= Rover.stop_forward/2)
                     
 left_turn_bias = 11
 ```
 
 ## Possibilities for further improvements
+Not use distant point in decisions related to steering
+
 Implement sample pickup
 
 Implement the decision step with a finite state machine
