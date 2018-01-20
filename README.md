@@ -7,7 +7,7 @@ If any aspect of the project is insufficiently implemented please let me know. I
 ## Generating video with the Jupiter Notebook
 I have managed to run all the function is the notebook. `process_image()` was completed using the functions in the notebook.
 
-`color_thresh()` was modifie to take in ranges.
+`color_thresh()` was modified to take in ranges.
 ```
 def color_thresh(img, rgb_thresh):
     # Create an array of zeros same xy size as img, but single channel
@@ -34,7 +34,7 @@ rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
 rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
 ```
 
-Optional functionality was added for debuging that marks the position of the rover on the worldmap.
+Optional functionality was added for debugging that marks the position of the rover on the world map.
 
 ```
  if mark_rover_position:
@@ -44,7 +44,7 @@ Optional functionality was added for debuging that marks the position of the rov
 ```
 
 ## Autonomous Navigation and Mapping
-The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is syced to a Git repository [PocsGeza/Udacity_Rover_Challange](https://github.com/PocsGeza/Udacity_Rover_Challange). 
+The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challange](https://github.com/PocsGeza/Udacity_Rover_Challange). 
 
 ## Preception Step
 The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
@@ -132,7 +132,7 @@ Scale and translate to world coordinates
  ```
  
  Trim distant points from nav and obs
- This was in the hope of improveing fidelity
+ This was in the hope of improving fidelity
  
 ```
   Select points closer than given distance
@@ -146,8 +146,8 @@ Scale and translate to world coordinates
     ypix_w_cor_obs_trim = ypix_world_cord_obs[close_enough_obs]
 ```
 ### 7) Update Rover worldmap (to be displayed on right side of screen)
- a) Update worldmap
- Filtering was added based pitch and roll aviod updating the worldmap when the perspective transform would produce incorrect mapings.
+ a) Update world map
+ Filtering was added based pitch and roll avoid updating the world map when the perspective transform would produce incorrect mappings.
  I did not want to take time to figure what scenrio is causing the IndexError exception.
  
  ``` 
@@ -165,7 +165,7 @@ Scale and translate to world coordinates
         pass
 ```
   b) Trim worldmap
-  Low sum points on the wold map where periodicaly reset to 0 in hope of increasing the fidelity of the mapping.
+  Low sum points on the world map where periodically reset to 0 in hope of increasing the fidelity of the mapping.
   
   ```sh
     Rover.counter += 1
@@ -184,6 +184,10 @@ Scale and translate to world coordinates
  Rover.nav_dists = dist_nav
  Rover.nav_angles = angles_nav
 ```
+
+## Decision Step
+
+
 I've saved some test data for you in the folder called `test_dataset`.  In that folder you'll find a csv file with the output data for steering, throttle position etc. and the pathnames to the images recorded in each run.  I've also saved a few images in the folder called `calibration_images` to do some of the initial calibration steps with.  
 
 The first step of this project is to record data on your own.  To do this, you should first create a new folder to store the image data in.  Then launch the simulator and choose "Training Mode" then hit "r".  Navigate to the directory you want to store data in, select it, and then drive around collecting data.  Hit "r" again to stop data collection.
