@@ -187,36 +187,31 @@ Scale and translate to world coordinates
 
 ## Decision Step
 
-
-I've saved some test data for you in the folder called `test_dataset`.  In that folder you'll find a csv file with the output data for steering, throttle position etc. and the pathnames to the images recorded in each run.  I've also saved a few images in the folder called `calibration_images` to do some of the initial calibration steps with.  
-
-The first step of this project is to record data on your own.  To do this, you should first create a new folder to store the image data in.  Then launch the simulator and choose "Training Mode" then hit "r".  Navigate to the directory you want to store data in, select it, and then drive around collecting data.  Hit "r" again to stop data collection.
-
-## Data Analysis
-Included in the IPython notebook called `Rover_Project_Test_Notebook.ipynb` are the functions from the lesson for performing the various steps of this project.  The notebook should function as is without need for modification at this point.  To see what's in the notebook and execute the code there, start the jupyter notebook server at the command line like this:
+I declared variables fine tuning the `decision()`.
+`enough_space_on_both_sides` is used to indicate the there is enough navigable terrain on the front left and front right side of the rover. This avoids getting to close to walls.
+`left_turn_bias` is added to invocations of Rover.steer and turns the rover into a wall crawler.
 
 ```
-jupyter notebook
+left_nav_ind = Rover.nav_angles[Rover.nav_angles > 0]
+right_nav_ind = Rover.nav_angles[Rover.nav_angles <= 0]
+enough_space_on_both_sides = (len(left_nav_ind) >= Rover.stop_forward/2) & (len(right_nav_ind) >= Rover.stop_forward/2)
+                    
+left_turn_bias = 11
 ```
 
-This command will bring up a browser window in the current directory where you can navigate to wherever `Rover_Project_Test_Notebook.ipynb` is and select it.  Run the cells in the notebook from top to bottom to see the various data analysis steps.  
+## Possibilities for further improvements
+Implement sample pickup
 
-The last two cells in the notebook are for running the analysis on a folder of test images to create a map of the simulator environment and write the output to a video.  These cells should run as-is and save a video called `test_mapping.mp4` to the `output` folder.  This should give you an idea of how to go about modifying the `process_image()` function to perform mapping on your data.  
+Implement the decision step with a finite state machine
 
-## Navigating Autonomously
-The file called `drive_rover.py` is what you will use to navigate the environment in autonomous mode.  This script calls functions from within `perception.py` and `decision.py`.  The functions defined in the IPython notebook are all included in`perception.py` and it's your job to fill in the function called `perception_step()` with the appropriate processing steps and update the rover map. `decision.py` includes another function called `decision_step()`, which includes an example of a conditional statement you could use to navigate autonomously.  Here you should implement other conditionals to make driving decisions based on the rover's state and the results of the `perception_step()` analysis.
+Extract RoverState to separate .py file
 
-`drive_rover.py` should work as is if you have all the required Python packages installed. Call it at the command line like this: 
+Add type assertions to all methods
 
-```sh
-python drive_rover.py
-```  
+Creat RoverStateUdated class form RoverState and only do changes to the child class
 
-Then launch the simulator and choose "Autonomous Mode".  The rover should drive itself now!  It doesn't drive that well yet, but it's your job to make it better!  
+Store Home coordinates in RoverStateUdated
 
-**Note: running the simulator with different choices of resolution and graphics quality may produce different results!  Make a note of your simulator settings in your writeup when you submit the project.**
+Store color thresholds in RoverStateUdated
 
-### Project Walkthrough
-If you're struggling to get started on this project, or just want some help getting your code up to the minimum standards for a passing submission, we've recorded a walkthrough of the basic implementation for you but **spoiler alert: this [Project Walkthrough Video](https://www.youtube.com/watch?v=oJA6QHDPdQw) contains a basic solution to the project!**.
-
-
+Add Going_Home state to the rover after all rocks are collected or a given time has passed
