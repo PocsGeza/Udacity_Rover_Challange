@@ -88,8 +88,8 @@ xpix_rc_obs, ypix_rn_obs = rover_coords(threshed_obstacle)
 xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
 ```
 ### 6) Convert rover-centric pixel values to world coordinates
-  a) Rotate navigable, obstacles and rock threshold images
-```sh
+ a) Rotate navigable, obstacles and rock threshold images
+  ```sh
     yaw = Rover.yaw
 
     xpix_rotated_nav, ypix_rotated_nav = rotate_pix(xpix_rc_nav,
@@ -101,9 +101,10 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
     xpix_rotated_rock, ypix_rotated_rock = rotate_pix(xpix_rc_rock,
                                                       ypix_rn_rock,
                                                       yaw)
-                                                      ```
+```                                                  
 
  b) Scale and translate to world coordinates
+ 
     ```sh
     scale = 10
     x_pos = Rover.pos[0]
@@ -128,8 +129,10 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
                       x_pos, y_pos,
                       scale)
  ```
+ 
  c) Trim distant points from nav and obs
  This was in the hope of improveing fidelity
+ 
  ```sh
  # Select points closer than given distance
     good_proximity = 15
@@ -145,6 +148,7 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
  a) Update worldmap
  Filtering was added based pitch and roll aviod updating the worldmap when the perspective transform would produce incorrect mapings.
  I did not want to take time to figure what scenrio is causing the IndexError exception.
+ 
     ``` sh
     pitch_range = [1, 359]
     roll_range = [1, 359]
@@ -161,6 +165,7 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
         ```
   b) Trim worldmap
   Low sum points on the wold map where periodicaly reset to 0 in hope of increasing the fidelity of the mapping.
+  
     ```sh
     Rover.counter += 1
     if Rover.counter == 400:
@@ -170,9 +175,6 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
         to_low_obs = Rover.worldmap[:, :, 0] < 20
         Rover.worldmap[to_low_obs[1], to_low_obs[0], 0] = 0
         Rover.counter = 0
-```
-```sh
-warped = perspect_transform(image, source, destination)
 ```
 ### 8) Convert rover-centric pixel positions to polar coordinates
 ```sh
