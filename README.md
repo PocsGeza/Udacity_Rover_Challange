@@ -167,7 +167,7 @@ Scale and translate to world coordinates
   b) Trim worldmap
   Low sum points on the wold map where periodicaly reset to 0 in hope of increasing the fidelity of the mapping.
   
-    ```sh
+```sh
     Rover.counter += 1
     if Rover.counter == 400:
         to_low_nav = Rover.worldmap[:, :, 2] < 20
