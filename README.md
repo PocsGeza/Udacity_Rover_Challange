@@ -33,12 +33,18 @@ rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
 rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
 rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
 ```
-The first step is to download the simulator build that's appropriate for your operating system.  Here are the links for [Linux](https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Linux_Roversim.zip), [Mac](	https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Mac_Roversim.zip), or [Windows](https://s3-us-west-1.amazonaws.com/udacity-robotics/Rover+Unity+Sims/Windows_Roversim.zip).  
 
-You can test out the simulator by opening it up and choosing "Training Mode".  Use the mouse or keyboard to navigate around the environment and see how it looks.
+Optional functionality was added for debuging that marks the position of the rover on the worldmap.
 
-## Dependencies
-You'll need Python 3 and Jupyter Notebooks installed to do this project.  The best way to get setup with these if you are not already is to use Anaconda following along with the [RoboND-Python-Starterkit](https://github.com/ryan-keenan/RoboND-Python-Starterkit). 
+```sh
+ if mark_rover_position:
+        data.worldmap[y_pos,
+                      x_pos,
+                      :] = 255
+```
+
+## Autonomous Navigation and Mapping
+The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is syced to a Git repository [PocsGeza/Udacity_Rover_Challange](https://github.com/PocsGeza/Udacity_Rover_Challange). 
 
 
 Here is a great link for learning more about [Anaconda and Jupyter Notebooks](https://classroom.udacity.com/courses/ud1111)
