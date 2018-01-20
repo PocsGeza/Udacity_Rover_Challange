@@ -80,6 +80,106 @@ Rover.vision_image[:, :, 0] = threshed_obstacle*255
 Rover.vision_image[:, :, 1] = threshed_rock*255
 Rover.vision_image[:, :, 2] = threshed_navigable*255
 ```
+
+### 5) Convert map image pixel values to rover-centric coords
+```sh
+xpix_rc_nav, ypix_rn_nav = rover_coords(threshed_navigable)
+xpix_rc_obs, ypix_rn_obs = rover_coords(threshed_obstacle)
+xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
+```
+### 6) Convert rover-centric pixel values to world coordinates
+  a) Rotate navigable, obstacles and rock threshold images
+```sh
+    yaw = Rover.yaw
+
+    xpix_rotated_nav, ypix_rotated_nav = rotate_pix(xpix_rc_nav,
+                                                    ypix_rn_nav,
+                                                    yaw)
+    xpix_rotated_obs, ypix_rotated_obs = rotate_pix(xpix_rc_obs,
+                                                    ypix_rn_obs,
+                                                    yaw)
+    xpix_rotated_rock, ypix_rotated_rock = rotate_pix(xpix_rc_rock,
+                                                      ypix_rn_rock,
+                                                      yaw)
+                                                      ```
+
+ b) Scale and translate to world coordinates
+    ```sh
+    scale = 10
+    x_pos = Rover.pos[0]
+    y_pos = Rover.pos[1]
+    xpix_world_cord_nav, ypix_world_cord_nav = \
+        translate_pix(xpix_rotated_nav,
+                      ypix_rotated_nav,
+                      x_pos,
+                      y_pos,
+                      scale)
+
+    xpix_world_cord_obs, ypix_world_cord_obs = \
+        translate_pix(xpix_rotated_obs,
+                      ypix_rotated_obs,
+                      x_pos,
+                      y_pos,
+                      scale)
+
+    xpix_world_cord_rock, ypix_world_cord_rock = \
+        translate_pix(xpix_rotated_rock,
+                      ypix_rotated_rock,
+                      x_pos, y_pos,
+                      scale)
+ ```
+ c) Trim distant points from nav and obs
+ This was in the hope of improveing fidelity
+ ```sh
+ # Select points closer than given distance
+    good_proximity = 15
+    close_enough_nav = ((xpix_world_cord_nav - x_pos) ** 2 + (ypix_world_cord_nav - y_pos) ** 2) ** 0.5 < good_proximity
+    xpix_w_cor_nav_trim = xpix_world_cord_nav[close_enough_nav]
+    ypix_w_cor_nav_trim = ypix_world_cord_nav[close_enough_nav]
+
+    close_enough_obs = ((xpix_world_cord_obs - x_pos) ** 2 + (ypix_world_cord_obs - y_pos) ** 2) ** 0.5 < good_proximity-5
+    xpix_w_cor_obs_trim = xpix_world_cord_obs[close_enough_obs]
+    ypix_w_cor_obs_trim = ypix_world_cord_obs[close_enough_obs]
+```
+### 7) Update Rover worldmap (to be displayed on right side of screen)
+ a) Update worldmap
+ Filtering was added based pitch and roll aviod updating the worldmap when the perspective transform would produce incorrect mapings.
+ I did not want to take time to figure what scenrio is causing the IndexError exception.
+    ``` sh
+    pitch_range = [1, 359]
+    roll_range = [1, 359]
+
+    try:
+        if  ((Rover.pitch < pitch_range[1]) | (Rover.pitch > pitch_range[0])) &\
+        ((Rover.roll > roll_range[0]) | (Rover.roll > roll_range[0])):
+
+            Rover.worldmap[ypix_w_cor_obs_trim.astype(np.int32), xpix_w_cor_obs_trim.astype(np.int32), 0] += 1
+            Rover.worldmap[ypix_world_cord_rock.astype(np.int32), xpix_world_cord_rock.astype(np.int32), 1] += 1
+            Rover.worldmap[ypix_w_cor_nav_trim.astype(np.int32), xpix_w_cor_nav_trim.astype(np.int32), 2] += 1
+    except IndexError:
+        pass
+        ```
+  b) Trim worldmap
+  Low sum points on the wold map where periodicaly reset to 0 in hope of increasing the fidelity of the mapping.
+    ```sh
+    Rover.counter += 1
+    if Rover.counter == 400:
+        to_low_nav = Rover.worldmap[:, :, 2] < 20
+        Rover.worldmap[to_low_nav[1], to_low_nav[0], 2] = 0
+
+        to_low_obs = Rover.worldmap[:, :, 0] < 20
+        Rover.worldmap[to_low_obs[1], to_low_obs[0], 0] = 0
+        Rover.counter = 0
+```
+```sh
+warped = perspect_transform(image, source, destination)
+```
+### 8) Convert rover-centric pixel positions to polar coordinates
+```sh
+ dist_nav, angles_nav = to_polar_coords(xpix_rc_nav, ypix_rn_nav)
+ Rover.nav_dists = dist_nav
+ Rover.nav_angles = angles_nav
+```
 I've saved some test data for you in the folder called `test_dataset`.  In that folder you'll find a csv file with the output data for steering, throttle position etc. and the pathnames to the images recorded in each run.  I've also saved a few images in the folder called `calibration_images` to do some of the initial calibration steps with.  
 
 The first step of this project is to record data on your own.  To do this, you should first create a new folder to store the image data in.  Then launch the simulator and choose "Training Mode" then hit "r".  Navigate to the directory you want to store data in, select it, and then drive around collecting data.  Hit "r" again to stop data collection.
