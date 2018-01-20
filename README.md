@@ -167,7 +167,7 @@ Scale and translate to world coordinates
   b) Trim worldmap
   Low sum points on the wold map where periodicaly reset to 0 in hope of increasing the fidelity of the mapping.
   
-```sh
+  ```sh
     Rover.counter += 1
     if Rover.counter == 400:
         to_low_nav = Rover.worldmap[:, :, 2] < 20
@@ -178,6 +178,7 @@ Scale and translate to world coordinates
         Rover.counter = 0
 ```
 ### 8) Convert rover-centric pixel positions to polar coordinates
+
 ```
  dist_nav, angles_nav = to_polar_coords(xpix_rc_nav, ypix_rn_nav)
  Rover.nav_dists = dist_nav
