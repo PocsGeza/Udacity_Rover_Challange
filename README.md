@@ -7,6 +7,12 @@ If any aspect of the project is insufficiently implemented please let me know. I
 ## Generating video with the Jupiter Notebook
 I have managed to run all the function is the notebook. `process_image()` was completed using the functions in the notebook.
 
+[//]: # (Image References)
+
+[image1]: ./misc/rover_image.jpg
+[image2]: ./calibration_images/example_grid1.jpg
+[image3]: ./calibration_images/example_rock1.jpg 
+
 `color_thresh()` was modified to take in ranges.
 ```
 def color_thresh(img, rgb_thresh):
@@ -26,7 +32,10 @@ def color_thresh(img, rgb_thresh):
     # Return the binary image
     return color_select
 ```
-The color ranges where chosen using MS Paint-s color sampling tool.
+The color ranges where chosen using MS Paint-s color sampling tool and the provided calibration image.
+
+![alt text][image1]
+
 
 ```
 rgb_thresh_navigable = ([160, 255], [160, 255], [160, 255])
@@ -58,7 +67,6 @@ source = np.float32([[14, 140], [301, 140], [200, 96], [118, 96]])
                               [image.shape[1] / 2 - dst_size, image.shape[0] - 2 * dst_size - bottom_offset],
                               ])
 ```
-
 ### 2) Apply perspective transform to the image
 ```
 warped = perspect_transform(image, source, destination)
@@ -79,7 +87,6 @@ Rover.vision_image[:, :, 0] = threshed_obstacle*255
 Rover.vision_image[:, :, 1] = threshed_rock*255
 Rover.vision_image[:, :, 2] = threshed_navigable*255
 ```
-
 ### 5) Convert map image pixel values to rover-centric coordinates
 ```
 xpix_rc_nav, ypix_rn_nav = rover_coords(threshed_navigable)
@@ -202,7 +209,9 @@ left_turn_bias = 11
 ```
 
 ## Possibilities for further improvements
-Not use distant point in decisions related to steering
+Not use distant points in decisions related to steering
+
+Filter reg channel for points that are high in the blue channel
 
 Implement sample pickup
 
