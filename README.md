@@ -9,8 +9,9 @@ I have managed to run all the function is the notebook. `process_image()` was co
 
 
 [image1]: ./calibration_images/example_rock1.jpg 
-[image2]: ./misc/Simulator_settings.jpg
-[image3]: ./misc/Output_video_from_sample_images.jpg
+[image2]: ./misc/Output_video_from_sample_images.jpg
+[image3]: ./misc/Simulator_settings.jpg
+
 
 The only method modified is `color_thresh()`. It now takes in RGB ranges.
 ```
@@ -51,11 +52,11 @@ Optional functionality was added for debugging that marks the position of the ro
                       :] = 255
 ```
 
-![alt text][image3]
+![alt text][image2]
 ## Autonomous Navigation and Mapping
 * The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challenge](https://github.com/PocsGeza/Udacity_Rover_Challenge).
 * The simulator settings where: Resolution 1280x800, Graphics quality "Fantastic"  
-![alt text] [image2] 
+![alt text][image3] 
 
 ## Perception Step
 The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
