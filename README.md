@@ -54,6 +54,10 @@ Optional functionality was added for debugging that marks the position of the ro
 
 ![alt text][image2]
 
+The 60 fps video generated from images that I captures can be seen bellow:
+
+[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/q8aG1x4ttaM)
+
 
 ## Autonomous Navigation and Mapping
 * The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challenge](https://github.com/PocsGeza/Udacity_Rover_Challenge).
