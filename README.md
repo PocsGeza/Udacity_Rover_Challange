@@ -218,6 +218,12 @@ enough_space_on_both_sides = (len(left_nav_ind) >= Rover.stop_forward/2) & (len(
                     
 left_turn_bias = 11
 ```
+## How well does it navigate? 
+
+The rover project accomplishes the minimum requirements of at least 40% mapped with at least 60% fidelity and one target identified on most autonomus runs. The bellow video illustrates the navigation.
+
+
+[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/dgBYnbwcYsE)
 
 ## Possibilities for further improvements
 * Not use distant points in decisions related to steering
