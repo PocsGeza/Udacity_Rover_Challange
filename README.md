@@ -44,9 +44,9 @@ Optional functionality was added for debugging that marks the position of the ro
 ```
 
 ## Autonomous Navigation and Mapping
-The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challange](https://github.com/PocsGeza/Udacity_Rover_Challange). 
+The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Project](https://github.com/PocsGeza/RoboND-Rover-Project). 
 
-## Preception Step
+## Perception Step
 The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
 ### 1) Define source and destination points for perspective transform
 
@@ -80,7 +80,7 @@ Rover.vision_image[:, :, 1] = threshed_rock*255
 Rover.vision_image[:, :, 2] = threshed_navigable*255
 ```
 
-### 5) Convert map image pixel values to rover-centric coords
+### 5) Convert map image pixel values to rover-centric coordinates
 ```
 xpix_rc_nav, ypix_rn_nav = rover_coords(threshed_navigable)
 xpix_rc_obs, ypix_rn_obs = rover_coords(threshed_obstacle)
@@ -148,7 +148,7 @@ Scale and translate to world coordinates
 ### 7) Update Rover worldmap (to be displayed on right side of screen)
  a) Update world map
  Filtering was added based pitch and roll avoid updating the world map when the perspective transform would produce incorrect mappings.
- I did not want to take time to figure what scenrio is causing the IndexError exception.
+ I did not want to take time to figure what scenario is causing the IndexError exception.
  
  ``` 
     pitch_range = [1, 359]
@@ -212,10 +212,10 @@ Extract RoverState to separate .py file
 
 Add type assertions to all methods
 
-Creat RoverStateUdated class form RoverState and only do changes to the child class
+Create RoverStateUndated class form RoverState and only do changes to the child class
 
-Store Home coordinates in RoverStateUdated
+Store Home coordinates in RoverStateUndated
 
-Store color thresholds in RoverStateUdated
+Store color thresholds in RoverStateUndated
 
 Add Going_Home state to the rover after all rocks are collected or a given time has passed
