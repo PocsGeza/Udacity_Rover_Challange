@@ -9,10 +9,10 @@ I have managed to run all the function is the notebook. `process_image()` was co
 
 
 [image1]: ./calibration_images/example_rock1.jpg 
-[image2]: ./calibration_images/example_grid1.jpg
-[image3]: ./calibration_images/example_rock1.jpg 
+[image2]: ./misc/Simulator_settings.jpg
+[image3]: ./misc/Output_video_from_sample_images.jpg
 
-`color_thresh()` was modified to take in ranges.
+The only method modified is `color_thresh()`. It now takes in RGB ranges.
 ```
 def color_thresh(img, rgb_thresh):
     # Create an array of zeros same xy size as img, but single channel
@@ -42,7 +42,7 @@ rgb_thresh_obstacle = ([0, 160], [0, 160], [0, 160])
 rgb_thresh_rock = ([132, 157], [109, 177], [0, 55])
 ```
 
-Optional functionality was added for debugging that marks the position of the rover on the world map.
+Optional functionality was added for debugging that marks the position of the rover on the world map with a white line.
 
 ```
  if mark_rover_position:
@@ -51,8 +51,11 @@ Optional functionality was added for debugging that marks the position of the ro
                       :] = 255
 ```
 
+![alt text][image3]
 ## Autonomous Navigation and Mapping
-The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challenge](https://github.com/PocsGeza/Udacity_Rover_Challenge). 
+* The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challenge](https://github.com/PocsGeza/Udacity_Rover_Challenge).
+* The simulator settings where: Resolution 1280x800, Graphics quality "Fantastic"  
+![alt text] [image2] 
 
 ## Perception Step
 The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
@@ -93,7 +96,7 @@ xpix_rc_obs, ypix_rn_obs = rover_coords(threshed_obstacle)
 xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
 ```
 ### 6) Convert rover-centric pixel values to world coordinates
- Rotate navigable, obstacles and rock threshold images
+#### a) Rotate navigable, obstacles and rock threshold images
  
   ```
     yaw = Rover.yaw
@@ -110,7 +113,7 @@ xpix_rc_rock, ypix_rn_rock = rover_coords(threshed_rock)
 ```                                                  
 
  
-Scale and translate to world coordinates
+#### b) Scale and translate to world coordinates
  
  ```
     scale = 10
@@ -137,7 +140,7 @@ Scale and translate to world coordinates
                       scale)
  ```
  
- Trim distant points from nav and obs
+#### c) Trim distant points from nav and obs
  This was in the hope of improving fidelity
  
 ```
@@ -152,7 +155,7 @@ Scale and translate to world coordinates
     ypix_w_cor_obs_trim = ypix_world_cord_obs[close_enough_obs]
 ```
 ### 7) Update Rover worldmap (to be displayed on right side of screen)
- a) Update world map
+ #### a) Update world map
  Filtering was added based pitch and roll avoid updating the world map when the perspective transform would produce incorrect mappings.
  I did not want to take time to figure what scenario is causing the IndexError exception.
  
@@ -170,7 +173,7 @@ Scale and translate to world coordinates
     except IndexError:
         pass
 ```
-  b) Trim worldmap
+#### b) Trim worldmap
   Low sum points on the world map where periodically reset to 0 in hope of increasing the fidelity of the mapping.
   
   ```sh
