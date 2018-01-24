@@ -44,7 +44,7 @@ Optional functionality was added for debugging that marks the position of the ro
 ```
 
 ## Autonomous Navigation and Mapping
-The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Project](https://github.com/PocsGeza/RoboND-Rover-Project). 
+The code was edited using the PyCharm IDE to be able to benefit from code folding and region definition. The code is synced to a Git repository [PocsGeza/Udacity_Rover_Challenge](https://github.com/PocsGeza/Udacity_Rover_Challenge). 
 
 ## Perception Step
 The `perception_step()` is similar to `process_image()` from the Jupiter Notebook.
