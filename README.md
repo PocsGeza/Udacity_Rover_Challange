@@ -7,9 +7,8 @@ If any aspect of the project is insufficiently implemented please let me know. I
 ## Generating video with the Jupiter Notebook
 I have managed to run all the function is the notebook. `process_image()` was completed using the functions in the notebook.
 
-[//]: # (Image References)
 
-[image1]: ./misc/rover_image.jpg
+[image1]: ./calibration_images/example_rock1.jpg 
 [image2]: ./calibration_images/example_grid1.jpg
 [image3]: ./calibration_images/example_rock1.jpg 
 
@@ -209,22 +208,13 @@ left_turn_bias = 11
 ```
 
 ## Possibilities for further improvements
-Not use distant points in decisions related to steering
-
-Filter reg channel for points that are high in the blue channel
-
-Implement sample pickup
-
-Implement the decision step with a finite state machine
-
-Extract RoverState to separate .py file
-
-Add type assertions to all methods
-
-Create RoverStateUndated class form RoverState and only do changes to the child class
-
-Store Home coordinates in RoverStateUndated
-
-Store color thresholds in RoverStateUndated
-
-Add Going_Home state to the rover after all rocks are collected or a given time has passed
+* Not use distant points in decisions related to steering
+* Filter reg channel for points that are high in the blue channel
+* Implement sample pickup
+* Implement the decision step with a finite state machine
+* Extract RoverState to separate .py file
+* Add type assertions to all methods
+* Create RoverStateUndated class form RoverState and only do changes to the child class
+* Store Home coordinates in RoverStateUndated
+* Store color thresholds in RoverStateUndated
+* Add Going_Home state to the rover after all rocks are collected or a given time has passed
