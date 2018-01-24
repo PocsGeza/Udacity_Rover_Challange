@@ -2,7 +2,7 @@
 
 Dear reviewer,
 This is the best I could do with the project in the time available. This was by far the largest Python project I had to work on (not much experience with Python). I am also working 4 days a week and in the mornings I am preparing for the drivers exam.
-If any aspect of the project is insufficiently implemented please let me know. I will address as soon as I have time.
+If any aspect of the project is insufficiently implemented please let me know. I will address it as soon as I have time.
 
 ## Generating video with the Jupiter Notebook
 I have managed to run all the function is the notebook. `process_image()` was completed using the functions in the notebook.
