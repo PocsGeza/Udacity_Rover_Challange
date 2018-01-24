@@ -193,9 +193,9 @@ Scale and translate to world coordinates
 
 ## Decision Step
 
-I declared variables fine tuning the `decision()`.
-`enough_space_on_both_sides` is used to indicate the there is enough navigable terrain on the front left and front right side of the rover. This avoids getting to close to walls.
-`left_turn_bias` is added to invocations of Rover.steer and turns the rover into a wall crawler.
+* I declared variables fine tuning the `decision()`.
+* `enough_space_on_both_sides` is used to indicate the there is enough navigable terrain on the front left and front right side of the rover. This avoids getting to close to walls.
+* `left_turn_bias` is added to invocations of Rover.steer and turns the rover into a wall crawler.
 
 ```
 left_nav_ind = Rover.nav_angles[Rover.nav_angles > 0]
